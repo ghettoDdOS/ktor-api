@@ -1,10 +1,7 @@
 package ru.students.services
 
 import org.ktorm.dsl.eq
-import org.ktorm.entity.add
-import org.ktorm.entity.find
-import org.ktorm.entity.sequenceOf
-import org.ktorm.entity.toSet
+import org.ktorm.entity.*
 import ru.students.models.Chair
 import ru.students.models.ChairRequest
 import ru.students.models.Chairs
@@ -25,6 +22,9 @@ class ChairService {
     fun getById(id: Int): Chair? =
         connection.sequenceOf(Chairs)
             .find { chair -> chair.Id eq id }
+    fun getByFacultyId(id: Int): Set<Chair>? =
+        connection.sequenceOf(Chairs)
+            .filter { chair -> chair.Faculty eq id }.toSet()
 
     fun update(id: Int, request: ChairRequest): Boolean {
         val chair = getById(id)

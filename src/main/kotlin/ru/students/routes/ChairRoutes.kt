@@ -25,6 +25,7 @@ fun Application.configureChairRoutes() {
             createRoute(chairService)
             listRoute(chairService)
             getByIdRoute(chairService)
+            getByFacyltyIdRoute(chairService)
             updateRoute(chairService)
             deleteRoute(chairService)
         }
@@ -58,6 +59,18 @@ fun Route.getByIdRoute(service: ChairService) {
             ?.let { chair -> chair.toResponse() }
             ?.let { response -> call.respond(response) }
             ?: return@get call.respond(HttpStatusCode.BadRequest, ErrorResponse("Кафедра с Id:[$id] не найдена"))
+    }
+}
+
+fun Route.getByFacyltyIdRoute(service: ChairService) {
+    get("/faculty/{id}") {
+        val id: Int = call.parameters["id"]?.toIntOrNull()
+            ?: return@get call.respond(HttpStatusCode.BadRequest, ErrorResponse("Неправильный Id"))
+
+        service.getByFacultyId(id)
+            ?.let { chair -> chair.map(Chair::toResponse) }
+            ?.let { response -> call.respond(response) }
+            ?: return@get call.respond(HttpStatusCode.BadRequest, ErrorResponse("Кафедра с Id Факультета :[$id] не найдена"))
     }
 }
 
