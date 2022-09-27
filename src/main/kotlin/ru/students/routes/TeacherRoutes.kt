@@ -14,7 +14,7 @@ private fun Teacher?.toResponse(): TeacherResponse? =
             it.Id!!,
             ChairResponse(
                 it.Chair.Id,
-                FacultyResponse(it.Chair.Faculty.Id, it.Chair.Faculty.NameFaculty, it.Chair.Faculty.ShortNameFaculty),
+                it.Chair.Faculty.Id!!,
                 it.Chair.NameChair,
                 it.Chair.ShortNameChair
             ),

@@ -13,7 +13,7 @@ class ChairService {
         .add(Chair {
             NameChair = request.NameChair
             ShortNameChair = request.ShortNameChair
-            Faculty = FacultyService().getById(request.IdFaculty)!!
+            Faculty = FacultyService().getById(request.Faculty)!!
         }) == 1
 
     fun list(): Set<Chair> =
@@ -30,7 +30,7 @@ class ChairService {
         val chair = getById(id)
         chair?.NameChair = request.NameChair
         chair?.ShortNameChair = request.ShortNameChair
-        chair?.Faculty = FacultyService().getById(request.IdFaculty)!!
+        chair?.Faculty = FacultyService().getById(request.Faculty)!!
 
         return chair?.flushChanges() == 1
     }

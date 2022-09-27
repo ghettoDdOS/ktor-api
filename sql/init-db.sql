@@ -1,7 +1,6 @@
 CREATE TABLE "Chair" (
 	"Id" serial NOT NULL,
 	"IdFaculty" integer NOT NULL,
-	"Code" integer NOT NULL,
 	"NameChair" varchar(255) NOT NULL,
 	"ShortNameChair" varchar(50) NOT NULL,
 	CONSTRAINT "Chair_pk" PRIMARY KEY ("Id")

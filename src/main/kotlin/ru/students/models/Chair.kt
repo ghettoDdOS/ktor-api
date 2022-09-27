@@ -8,7 +8,7 @@ import org.ktorm.schema.varchar
 
 @Serializable
 data class ChairRequest(
-    val IdFaculty: Int,
+    val Faculty: Int,
     val NameChair: String,
     val ShortNameChair: String
 )
@@ -16,7 +16,7 @@ data class ChairRequest(
 @Serializable
 data class ChairResponse(
     val Id: Int?,
-    val Faculty: FacultyResponse,
+    val Faculty: Int,
     val NameChair: String,
     val ShortNameChair: String
 )

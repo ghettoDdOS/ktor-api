@@ -12,7 +12,7 @@ private fun Chair?.toResponse(): ChairResponse? =
     this?.let {
         ChairResponse(
             it.Id!!,
-            FacultyResponse(it.Faculty.Id, it.Faculty.NameFaculty, it.Faculty.ShortNameFaculty),
+            it.Faculty.Id!!,
             it.NameChair,
             it.ShortNameChair
         )
