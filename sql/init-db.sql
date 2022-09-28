@@ -62,6 +62,6 @@ INSERT INTO "Post"("NamePost") VALUES ('Профессор');
 INSERT INTO "Post"("NamePost") VALUES ('Старший преподаватель');
 INSERT INTO "Post"("NamePost") VALUES ('Ассистент');
 
-INSERT INTO "Chair"("IdFaculty", "Code", "NameChair", "ShortNameChair") VALUES (3,22,'Информационных систем и прикладной информатики','ИСиПИ');
+INSERT INTO "Chair"("IdFaculty", "NameChair", "ShortNameChair") VALUES (3,'Информационных систем и прикладной информатики','ИСиПИ');
 
 INSERT INTO "Teacher"("IdChair", "IdPost", "FirstName", "SecondName", "LastName", "Phone", "Email") VALUES (1,1,'Сергей','Глушенко','Андреевич','+7 9280823234', 'mail@mail.ru');

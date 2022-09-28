@@ -9,7 +9,7 @@ import ru.students.routes.configurePostRoutes
 import ru.students.routes.configureTeacherRoutes
 
 fun main() {
-    embeddedServer(Netty, port = System.getenv("PORT").toInt()) {
+    embeddedServer(Netty, port = 8080, host = "localhost") {
         configureFacultyRoutes()
         configureChairRoutes()
         configurePostRoutes()
