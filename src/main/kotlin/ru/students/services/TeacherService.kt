@@ -1,10 +1,7 @@
 package ru.students.services
 
 import org.ktorm.dsl.eq
-import org.ktorm.entity.add
-import org.ktorm.entity.find
-import org.ktorm.entity.sequenceOf
-import org.ktorm.entity.toSet
+import org.ktorm.entity.*
 import ru.students.models.Teacher
 import ru.students.models.TeacherRequest
 import ru.students.models.Teachers
@@ -14,8 +11,8 @@ class TeacherService {
 
     fun create(request: TeacherRequest): Boolean = connection.sequenceOf(Teachers)
         .add(Teacher {
-            Chair = ChairService().getById(request.IdChair)!!
-            Post = PostService().getById(request.IdPost)!!
+            Chair = ChairService().getById(request.Chair)!!
+            Post = PostService().getById(request.Post)!!
             FirstName = request.FirstName
             SecondName = request.SecondName
             LastName = request.LastName
@@ -30,11 +27,15 @@ class TeacherService {
         connection.sequenceOf(Teachers)
             .find { teacher -> teacher.Id eq id }
 
+    fun getByChairId(id: Int): Set<Teacher> =
+        connection.sequenceOf(Teachers)
+            .filter { teacher -> teacher.IdChair eq id }.toSet()
+
     fun update(id: Int, request: TeacherRequest): Boolean {
         val teacher = getById(id)
-        teacher?.Chair = ChairService().getById(request.IdChair)!!
+        teacher?.Chair = ChairService().getById(request.Chair)!!
         teacher?.FirstName = request.FirstName
-        teacher?.Post = PostService().getById(request.IdPost)!!
+        teacher?.Post = PostService().getById(request.Post)!!
         teacher?.SecondName = request.SecondName
         teacher?.LastName = request.LastName
         teacher?.Phone = request.Phone

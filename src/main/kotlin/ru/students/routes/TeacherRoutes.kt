@@ -12,12 +12,7 @@ private fun Teacher?.toResponse(): TeacherResponse? =
     this?.let {
         TeacherResponse(
             it.Id!!,
-            ChairResponse(
-                it.Chair.Id,
-                it.Chair.Faculty.Id!!,
-                it.Chair.NameChair,
-                it.Chair.ShortNameChair
-            ),
+            it.Chair.Id!!,
             PostResponse(it.Post.Id, it.Post.NamePost),
             it.FirstName,
             it.SecondName,
@@ -34,6 +29,7 @@ fun Application.configureTeacherRoutes() {
             createRoute(teacherService)
             listRoute(teacherService)
             getByIdRoute(teacherService)
+            getByChairIdRoute(teacherService)
             updateRoute(teacherService)
             deleteRoute(teacherService)
         }
@@ -67,6 +63,18 @@ fun Route.getByIdRoute(service: TeacherService) {
             ?.let { teacher -> teacher.toResponse() }
             ?.let { response -> call.respond(response) }
             ?: return@get call.respond(HttpStatusCode.BadRequest, ErrorResponse("Преподаватель с Id:[$id] не найден"))
+    }
+}
+
+fun Route.getByChairIdRoute(service: TeacherService) {
+    get("/chair/{id}") {
+        val id: Int = call.parameters["id"]?.toIntOrNull()
+            ?: return@get call.respond(HttpStatusCode.BadRequest, ErrorResponse("Неправильный Id"))
+
+        service.getByChairId(id)
+            ?.let { teacher -> teacher.map(Teacher::toResponse) }
+            ?.let { response -> call.respond(response) }
+            ?: return@get call.respond(HttpStatusCode.BadRequest, ErrorResponse("Преподаватель с Id кафедры:[$id] не найден"))
     }
 }
 

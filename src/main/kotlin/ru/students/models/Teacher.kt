@@ -8,8 +8,8 @@ import org.ktorm.schema.varchar
 
 @Serializable
 data class TeacherRequest(
-    val IdChair: Int,
-    val IdPost: Int,
+    val Chair: Int,
+    val Post: Int,
     val FirstName: String,
     val SecondName: String,
     val LastName: String,
@@ -20,7 +20,7 @@ data class TeacherRequest(
 @Serializable
 data class TeacherResponse(
     val Id: Int?,
-    val Chair: ChairResponse,
+    val Chair: Int,
     val Post: PostResponse,
     val FirstName: String,
     val SecondName: String,
