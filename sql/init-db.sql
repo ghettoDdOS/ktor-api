@@ -1,67 +1,93 @@
-CREATE TABLE "Chair" (
+CREATE TABLE "Vote" (
 	"Id" serial NOT NULL,
-	"IdFaculty" integer NOT NULL,
-	"NameChair" varchar(255) NOT NULL,
-	"ShortNameChair" varchar(50) NOT NULL,
-	CONSTRAINT "Chair_pk" PRIMARY KEY ("Id")
+	"Title" varchar(255) NOT NULL,
+	"DateStart" DATE NOT NULL,
+	"DateFinish" DATE NOT NULL,
+	"Status" varchar(50) NOT NULL,
+	CONSTRAINT "Vote_pk" PRIMARY KEY ("Id")
 ) WITH (
   OIDS=FALSE
 );
 
-
-
-CREATE TABLE "Teacher" (
+CREATE TABLE "Question" (
 	"Id" serial NOT NULL,
-	"IdChair" integer NOT NULL,
-	"IdPost" integer NOT NULL,
-	"FirstName" varchar(255) NOT NULL,
-	"SecondName" varchar(255) NOT NULL,
-	"LastName" varchar(255),
+	"VoteId" integer NOT NULL,
+	"Content" TEXT NOT NULL,
+	"DateVote" DATE NOT NULL,
+	CONSTRAINT "Question_pk" PRIMARY KEY ("Id")
+) WITH (
+  OIDS=FALSE
+);
+
+CREATE TABLE "User" (
+	"Id" serial NOT NULL,
+	"LastName" varchar(50) NOT NULL,
+	"FirstName" varchar(50) NOT NULL,
+	"Email" varchar(50) NOT NULL,
 	"Phone" varchar(15) NOT NULL,
-	"Email" varchar(20) NOT NULL,
-	CONSTRAINT "Teacher_pk" PRIMARY KEY ("Id")
+	"Status" bool NOT NULL,
+	CONSTRAINT "User_pk" PRIMARY KEY ("Id")
 ) WITH (
   OIDS=FALSE
 );
 
 
 
-CREATE TABLE "Post" (
+CREATE TABLE "Choice" (
 	"Id" serial NOT NULL,
-	"NamePost" varchar(255) NOT NULL,
-	CONSTRAINT "Post_pk" PRIMARY KEY ("Id")
+	"QuestionId" integer NOT NULL,
+	"UserId" integer NOT NULL,
+	"ChoiceUser" varchar(255) NOT NULL,
+	CONSTRAINT "Choice_pk" PRIMARY KEY ("Id")
 ) WITH (
   OIDS=FALSE
 );
 
+ALTER TABLE "Question" ADD CONSTRAINT "Question_fk0" FOREIGN KEY ("VoteId") REFERENCES "Vote"("Id");
+ALTER TABLE "Choice" ADD CONSTRAINT "Choice_fk0" FOREIGN KEY ("QuestionId") REFERENCES "Question"("Id");
+ALTER TABLE "Choice" ADD CONSTRAINT "Choice_fk1" FOREIGN KEY ("UserId") REFERENCES "User"("Id");
 
-
-CREATE TABLE "Faculty" (
-	"Id" serial NOT NULL,
-	"NameFaculty" varchar(255) NOT NULL,
-	"ShortNameFaculty" varchar(50) NOT NULL,
-	CONSTRAINT "Faculty_pk" PRIMARY KEY ("Id")
-) WITH (
-  OIDS=FALSE
+INSERT INTO "Vote" ("Title", "DateStart", "DateFinish", "Status")
+VALUES (
+    'Предпочтения',
+    '2022-09-22',
+    '2022-10-10',
+    'Действующий'
 );
 
-ALTER TABLE "Chair" ADD CONSTRAINT "Chair_fk0" FOREIGN KEY ("IdFaculty") REFERENCES "Faculty"("Id");
-ALTER TABLE "Teacher" ADD CONSTRAINT "Teacher_fk0" FOREIGN KEY ("IdChair") REFERENCES "Chair"("Id");
-ALTER TABLE "Teacher" ADD CONSTRAINT "Teacher_fk1" FOREIGN KEY ("IdPost") REFERENCES "Post"("Id");
+INSERT INTO "User" ("LastName", "FirstName", "Email", "Phone", "Status")
+VALUES (
+    'Петров',
+    'Василий',
+    'test@tsa.sda',
+    '+7984893234234',
+    false
+);
 
-INSERT INTO "Faculty"("NameFaculty", "ShortNameFaculty") VALUES ('Менеджмента и предпринимательства','МИП');
-INSERT INTO "Faculty"("NameFaculty", "ShortNameFaculty") VALUES ('Торгового дела','ТД');
-INSERT INTO "Faculty"("NameFaculty", "ShortNameFaculty") VALUES ('Компьютерных технологий и информационной безопасности','КТиИБ');
-INSERT INTO "Faculty"("NameFaculty", "ShortNameFaculty") VALUES ('Учетно-экономический','УЭФ');
-INSERT INTO "Faculty"("NameFaculty", "ShortNameFaculty") VALUES ('Экономики и финансов','ЭИФ');
-INSERT INTO "Faculty"("NameFaculty", "ShortNameFaculty") VALUES ('Юридический','ЮФ');
-INSERT INTO "Faculty"("NameFaculty", "ShortNameFaculty") VALUES ('Лингвистики и журналистики','ЛИЖ');
+INSERT INTO "Question" ("VoteId", "Content", "DateVote")
+VALUES (
+    1,
+    'Какой любимый цвет? ',
+    '2022-09-25'
+  );
 
-INSERT INTO "Post"("NamePost") VALUES ('Доцент');
-INSERT INTO "Post"("NamePost") VALUES ('Профессор');
-INSERT INTO "Post"("NamePost") VALUES ('Старший преподаватель');
-INSERT INTO "Post"("NamePost") VALUES ('Ассистент');
+INSERT INTO "Question" ("VoteId", "Content", "DateVote")
+VALUES (
+    1,
+    ' Какое блюдо нравится больше? ',
+    '2022-09-25'
+  );
 
-INSERT INTO "Chair"("IdFaculty", "NameChair", "ShortNameChair") VALUES (3,'Информационных систем и прикладной информатики','ИСиПИ');
+INSERT INTO "Question" ("VoteId", "Content", "DateVote")
+VALUES (
+    1,
+    ' Предпочитаете книги или просмотр фильмов?',
+    '2022-09-25'
+  );
 
-INSERT INTO "Teacher"("IdChair", "IdPost", "FirstName", "SecondName", "LastName", "Phone", "Email") VALUES (1,1,'Сергей','Глушенко','Андреевич','+7 9280823234', 'mail@mail.ru');
+INSERT INTO "Question" ("VoteId", "Content", "DateVote")
+VALUES (
+    1,
+    'Какой знак зодиака?',
+    '2022-09-25'
+  );
