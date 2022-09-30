@@ -23,13 +23,11 @@ class ChoiceService {
         connection.sequenceOf(Choices)
             .find { choice -> choice.Id eq id }
 
-    fun getByQuestionId(id: Int): Set<Choice>? =
+    fun getByUserIdAndQuestionId(questionId: Int, userId: Int): Set<Choice>? =
         connection.sequenceOf(Choices)
-            .filter { choice -> choice.Question eq id }.toSet()
-
-    fun getByUserId(id: Int): Set<Choice>? =
-        connection.sequenceOf(Choices)
-            .filter { choice -> choice.User eq id }.toSet()
+            .filter { choice -> choice.Question eq questionId }
+            .filter { choice -> choice.User eq userId }
+            .toSet()
 
     fun update(id: Int, request: ChoiceRequest): Boolean {
         val choice = getById(id)

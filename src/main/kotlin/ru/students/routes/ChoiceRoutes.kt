@@ -25,8 +25,7 @@ fun Application.configureChoiceRoutes() {
             createRoute(choiceService)
             listRoute(choiceService)
             getByIdRoute(choiceService)
-            getByUserIdRoute(choiceService)
-            getByQuestionIdRoute(choiceService)
+            getByQuestionIdAndByUserIdRoute(choiceService)
             updateRoute(choiceService)
             deleteRoute(choiceService)
         }
@@ -63,27 +62,17 @@ fun Route.getByIdRoute(service: ChoiceService) {
     }
 }
 
-fun Route.getByUserIdRoute(service: ChoiceService) {
-    get("/user/{id}") {
-        val id: Int = call.parameters["id"]?.toIntOrNull()
-            ?: return@get call.respond(HttpStatusCode.BadRequest, ErrorResponse("Неправильный Id"))
+fun Route.getByQuestionIdAndByUserIdRoute(service: ChoiceService) {
+    get("/question/{questionId}/user/{userId}") {
+        val questionId: Int = call.parameters["questionId"]?.toIntOrNull()
+            ?: return@get call.respond(HttpStatusCode.BadRequest, ErrorResponse("Неправильный Id вопроса"))
+        val userId: Int = call.parameters["userId"]?.toIntOrNull()
+            ?: return@get call.respond(HttpStatusCode.BadRequest, ErrorResponse("Неправильный Id пользователя"))
 
-        service.getByUserId(id)
+        service.getByUserIdAndQuestionId(questionId, userId)
             ?.let { choice -> choice.map(Choice::toResponse) }
             ?.let { response -> call.respond(response) }
-            ?: return@get call.respond(HttpStatusCode.BadRequest, ErrorResponse("Результат голосования с Id Пользователя :[$id] не найдена"))
-    }
-}
-
-fun Route.getByQuestionIdRoute(service: ChoiceService) {
-    get("/question/{id}") {
-        val id: Int = call.parameters["id"]?.toIntOrNull()
-            ?: return@get call.respond(HttpStatusCode.BadRequest, ErrorResponse("Неправильный Id"))
-
-        service.getByQuestionId(id)
-            ?.let { choice -> choice.map(Choice::toResponse) }
-            ?.let { response -> call.respond(response) }
-            ?: return@get call.respond(HttpStatusCode.BadRequest, ErrorResponse("Результат голосования с Id Вопросов голосования :[$id] не найдена"))
+            ?: return@get call.respond(HttpStatusCode.BadRequest, ErrorResponse("Результат голосования с Id Пользователя :[$userId] и с Id Вопросом голосования :[$questionId] не найдена"))
     }
 }
 
